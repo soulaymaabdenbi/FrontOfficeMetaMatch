@@ -1,0 +1,49 @@
+<div class="chat-app" style="margin-top: 142px;">
+  <aside class="user-list">
+    <div class="search-container">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="filterUsers()"
+        placeholder="Search users..."
+        class="search-input"
+      />
+    </div>
+
+    <ul>
+      <li
+        *ngFor="let user of filteredUsers"
+        (click)="selectUser(user)"
+        [ngClass]="{'active': user._id === selectedUser?._id}"
+      >
+        <img [src]="user.profile" alt="{{ user.fullname }}" class="avatar">
+        <h5 class="username">{{ user.fullname }}</h5>
+        <!-- <div class="user-info">
+
+          <p class="status">{{ user.latestMessage || 'No messages yet' }}</p>
+        </div> -->
+
+      </li>
+    </ul>
+  </aside>
+  <section class="chat-area" *ngIf="selectedUser">
+    <header class="chat-header">
+      <img [src]="selectedUser.profile" alt="{{ selectedUser.fullname }}" class="avatar" width="50px" height="50px">
+      <div class="user-info">
+        <h5 class="username">{{ selectedUser.fullname }}</h5>
+
+      </div>
+    </header>
+    <div class="messages">
+      <div *ngFor="let message of messages" class="message" [ngClass]="{'mine': isMyMessage(message.senderId)}">
+        <div class="message-content">{{ message.text }}</div>
+        <div class="message-timestamp">{{ message.timestamp | date:'shortTime' }}</div>
+      </div>
+    </div>
+
+    <footer class="chat-input">
+      <input type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message...">
+      <button (click)="sendMessage()">Send</button>
+    </footer>
+  </section>
+</div>
